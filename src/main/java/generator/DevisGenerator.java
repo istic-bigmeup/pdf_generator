@@ -39,8 +39,32 @@ public class DevisGenerator extends Generator {
     @Override
     public void generate() {
         try{
-            write(500, 100, "Coucou Raymond");
-            write(400, 100, "Coucou Yannick");
+            // Phone number
+            write(100, 720, "02 11 22 33 44");
+
+            // Email
+            write(78, 696, "le@mail.com");
+
+            // N SIREN
+            write(98, 677, "12345679098");
+
+            // Date
+            write(348, 575, "10/02/2017");
+
+            // Devis number
+            write(340, 533, "0001");
+
+            // Products
+            write(61, 470, "Produit 1");
+
+            // Quantities
+            write(342, 470, "1");
+
+            // Unit's price
+            write(403, 470, "33€");
+
+            // Total price
+            write(475, 470, "33€");
 
             document.save("resources/" + this.title + "_" + this.subject + ".pdf");
 

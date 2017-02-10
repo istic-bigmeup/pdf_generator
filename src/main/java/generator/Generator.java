@@ -65,4 +65,16 @@ public class Generator {
         // Close the stream
         contentStream.close();
     }
+
+    /**
+     * Generates the coordinates in the page
+     * @throws Exception    The exception thrown
+     */
+    protected void generate_coordinates() throws Exception{
+        for(int i = 0; i < 1000; i+=50){
+            for(int j = 0; j < 1000; j+=25){
+                write(i, j, "(" + i + ";" + j + ")");
+            }
+        }
+    }
 }
