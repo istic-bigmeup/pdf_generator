@@ -7,7 +7,7 @@ Projet donné par l'entreprise BigMeUp, concernant le portage adminisratif.
 ## Technologie utilisée
 
 * Java
-** PDF Clown: https://pdfclown.org/overview/features/
+** PDF-Box: http://pdfbox.apache.org/
 
 ## Description
 
