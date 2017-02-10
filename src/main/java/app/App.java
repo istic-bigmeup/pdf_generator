@@ -13,8 +13,7 @@ import java.io.File;
 public class App {
     public static void main(String[] args) {
         try {
-            PDDocument pdDocument = PDDocument.load(new File("resources/devis.pdf"));
-            Generator generator = new DevisGenerator("Test", "Test subject", pdDocument);
+            Generator generator = new DevisGenerator("Test", "Test subject");
             generator.generate();
         } catch(Exception e){
             e.printStackTrace();

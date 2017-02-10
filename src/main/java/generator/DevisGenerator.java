@@ -2,22 +2,35 @@ package generator;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
 import java.awt.*;
+import java.io.*;
 
 /**
  * Created by jérémy on 10/02/2017.
  */
 public class DevisGenerator extends Generator {
+    private final String PATH = "resources/devis.pdf";
     /**
      * The constructor
      * @param title     The title
      * @param subject   The subject
-     * @param document  The document
      */
-    public DevisGenerator(String title, String subject, PDDocument document){
-        super(title, subject, document);
+    public DevisGenerator(String title, String subject){
+        super(title, subject);
+
+        try {
+            PDDocument document = PDDocument.load(new File(PATH));
+            setDocument(document);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -26,17 +39,12 @@ public class DevisGenerator extends Generator {
     @Override
     public void generate() {
         try{
-            PDFTextStripperByArea stripper = new PDFTextStripperByArea();
-            stripper.setSortByPosition(true);
+            write(500, 100, "Coucou Raymond");
+            write(400, 100, "Coucou Yannick");
 
-            Rectangle rectangle = new Rectangle( 10, 280, 275, 600);
-            stripper.addRegion("class1", rectangle);
+            document.save("resources/" + this.title + "_" + this.subject + ".pdf");
 
-            PDPage firstPage = document.getPage(0);
-            stripper.extractRegions(firstPage);
-
-            System.out.println("Text in the area" + rectangle);
-            System.out.println(stripper.getTextForRegion("class1"));
+            document.close();
         } catch (Exception e){
             e.printStackTrace();
         }
