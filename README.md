@@ -8,6 +8,7 @@ Projet donné par l'entreprise BigMeUp, concernant le portage adminisratif.
 
 * Java
 ** PDF-Box: http://pdfbox.apache.org/
+** Boxable: https://github.com/dhorions/boxable
 
 ## Description
 

@@ -2,6 +2,8 @@ package generator;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
 import java.awt.*;
@@ -28,9 +30,26 @@ public class FactureGenerator extends Generator {
     }
 
     /**
-     * Generates the PDF file
+     * Writes the header
      */
     @Override
-    public void generate() {
+    protected void header() throws Exception {
+        PDFont font = PDTrueTypeFont.loadTTF(document, new File("resources/arial.ttf"));
+    }
+
+    /**
+     * Writes the body
+     */
+    @Override
+    protected void body() throws Exception {
+        PDFont font = PDTrueTypeFont.loadTTF(document, new File("resources/arial.ttf"));
+    }
+
+    /**
+     * Writes the footer
+     */
+    @Override
+    protected void footer() throws Exception {
+        PDFont font = PDTrueTypeFont.loadTTF(document, new File("resources/arial.ttf"));
     }
 }
