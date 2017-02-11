@@ -10,29 +10,44 @@ import java.io.File;
 
 /**
  * Created by jérémy on 10/02/2017.
+ *
  */
 public class Generator {
     protected final int FONT_SIZE_NORMAL    = 10;
     protected final int FONT_SIZE_TITLE     = 12;
     protected final int FONT_SIZE_BIG_TITLE = 19;
 
-    protected final String ARIAL = "resources/fonts/arial.ttf";
-    protected final String ARIAL_BOLD = "resources/fonts/arialbd.ttf";
+    protected final int INTER_LINE          = 12;
 
-    protected String title;
-    protected String subject;
-    protected PDDocument document;
+    protected PDFont arial;
+    protected PDFont arialBold;
+
+    protected final String m_ARIAL = "resources/fonts/arial.ttf";
+    protected final String m_ARIAL_BOLD = "resources/fonts/arialbd.ttf";
+
+    private String title;
+    private String subject;
+    private PDDocument document;
 
     /**
      * The constructor
      */
-    public Generator(String title, String subject){
+    public Generator(String title, String subject) {
         this.title      = title;
         this.subject    = subject;
+
+        this. document  = null;
+        this.arialBold  = null;
+        this.arial      = null;
     }
 
     public void setDocument(PDDocument document){
         this.document   = document;
+    }
+
+    public void initFonts() throws Exception {
+        arial       = PDTrueTypeFont.loadTTF(document, new File(m_ARIAL));
+        arialBold   = PDTrueTypeFont.loadTTF(document, new File(m_ARIAL_BOLD));
     }
 
     /**
@@ -89,10 +104,9 @@ public class Generator {
      * @throws Exception    The exception thrown
      */
     protected void generate_coordinates() throws Exception{
-        PDFont font = PDTrueTypeFont.loadTTF(document, new File("resources/arial.ttf"));
         for(int i = 0; i < 1000; i+=50){
             for(int j = 0; j < 1000; j+=25){
-                write(i, j, "(" + i + ";" + j + ")", font, 12);
+                write(i, j, "(" + i + ";" + j + ")", arial, 12);
             }
         }
     }
