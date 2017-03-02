@@ -6,7 +6,10 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 
+import database.DataBase;
+
 import java.io.File;
+import java.util.Map;
 
 /**
  * Created by jérémy on 10/02/2017.
@@ -18,12 +21,15 @@ public class Generator {
     protected final int FONT_SIZE_BIG_TITLE = 19;
 
     protected final int INTER_LINE          = 12;
+    
+    protected final String m_ARIAL = "resources/fonts/arial.ttf";
+    protected final String m_ARIAL_BOLD = "resources/fonts/arialbd.ttf";
 
     protected PDFont arial;
     protected PDFont arialBold;
-
-    protected final String m_ARIAL = "resources/fonts/arial.ttf";
-    protected final String m_ARIAL_BOLD = "resources/fonts/arialbd.ttf";
+    protected String missionId;
+    protected DataBase db;
+    protected Map<String, String> mission;
 
     private String title;
     private String subject;
@@ -32,26 +38,33 @@ public class Generator {
     /**
      * The constructor
      */
-    public Generator(String title, String subject) {
-        this.title      = title;
-        this.subject    = subject;
+    public Generator(String missionId) {
+        this.title      = "";
+        this.subject    = "";
 
+        this.missionId 	= missionId;
         this. document  = null;
         this.arialBold  = null;
         this.arial      = null;
+        
+        db = new DataBase("localhost");
+        mission = db.getMission(missionId);
     }
 
     public void setDocument(PDDocument document){
         this.document   = document;
     }
 
-    public void initFonts() throws Exception {
+    @SuppressWarnings("deprecation")
+	public void initFonts() throws Exception {
         arial       = PDTrueTypeFont.loadTTF(document, new File(m_ARIAL));
         arialBold   = PDTrueTypeFont.loadTTF(document, new File(m_ARIAL_BOLD));
     }
 
     /**
      * Generates the PDF file
+     * 
+     * @param	id	The id in the database
      */
     public void generate(){
         try {
@@ -67,6 +80,14 @@ public class Generator {
         } catch(Exception e){
             e.printStackTrace();
         }
+    }
+    
+    public void setTitle(String title){
+    	this.title = title;
+    }
+    
+    public void setSubject(String subject){
+    	this.subject = subject;
     }
 
     /**

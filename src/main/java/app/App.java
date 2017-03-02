@@ -1,6 +1,5 @@
 package app;
 
-import generator.BonDeCommandeGenerator;
 import generator.DevisGenerator;
 import generator.FactureGenerator;
 import generator.Generator;
@@ -12,13 +11,19 @@ import generator.Generator;
 public class App {
     public static void main(String[] args) {
         try {
-            Generator devis = new DevisGenerator("Test", "Test devis");
-            Generator facture = new FactureGenerator("Test", "Test facture");
-            Generator bon = new BonDeCommandeGenerator("Test", "Test bon de commande");
+            if(args.length >= 2){
+                Generator file;
 
-            devis.generate();
-            facture.generate();
-            bon.generate();
+                if(args[0].equals("devis")) {
+                    file = new DevisGenerator(args[1]);
+                } else {
+                    file = new FactureGenerator(args[1]);
+                }
+
+                file.generate();
+            } else {
+                System.out.println("Usage : pdfgenerator devis|facture id");
+            }
         } catch(Exception e){
             e.printStackTrace();
         }
