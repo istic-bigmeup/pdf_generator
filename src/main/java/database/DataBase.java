@@ -15,7 +15,6 @@ public class DataBase {
 	private final String[] COLLECTION_NAMES = {"annonces", "bons_de_commandes", "devis", "documents", "factures", "missions", "users"};
 	
 	private final int ID_DEVIS 				= 2;
-	private final int ID_DOCUMENTS 			= 3;
 	private final int ID_FACTURES 			= 4;
 	private final int ID_MISSIONS 			= 5;
 	private final int ID_USERS 				= 6;
@@ -26,6 +25,7 @@ public class DataBase {
 	 * 
 	 * @param host	The host's name
 	 */
+	@SuppressWarnings({ "deprecation", "resource" })
 	public DataBase(String host){
 		try{
 			MongoClient mongoClient= new MongoClient(host);
@@ -54,7 +54,10 @@ public class DataBase {
 									"prenom",
 									"email",
 									"adresse",
-									"telephone"
+									"telephone",
+									"nom_entreprise",
+									"siret",
+									"numero_tva"
 								};
 		
 		// Initializes the query
@@ -63,19 +66,22 @@ public class DataBase {
 		
 		// Initializes the fields
 		BasicDBObject field = new BasicDBObject();
-		field.put(field_names[0], 0);
-		field.put(field_names[1], 1);
-		field.put(field_names[2], 2);
-		field.put(field_names[3], 4);
-		field.put(field_names[4], 11);
-		field.put(field_names[5], 9);
+		field.put(field_names[0], 0);//_id
+		field.put(field_names[1], 1);//nom
+		field.put(field_names[2], 2);//prenom
+		field.put(field_names[3], 4);//email
+		field.put(field_names[4], 14);//adresse
+		field.put(field_names[5], 9);//telephone
+		field.put(field_names[6], 10);//nom entreprise
+		field.put(field_names[7], 13);//siret
+		field.put(field_names[8], 15);//numero tva
 		
 		DBCursor cursor = col.find(query, field);
 		while(cursor.hasNext()){
 			BasicDBObject object = (BasicDBObject) cursor.next();
 			
 			for(int i = 0; i < field_names.length; i++){
-				res.put	(field_names[i], object.getString(field_names[i]));
+				res.put	(field_names[i], object.getString(field_names[i]) == null ? "" : object.getString(field_names[i]));
 			}
 		}
 		
@@ -97,12 +103,10 @@ public class DataBase {
 		String[] field_names = 	{	"_id",
 									"numero_devis",
 									"date_devis",
-									"modalite_paiement",
 									"date_paiement",
 									"penalite_retard",
 									"validite_devis",
-									"remise",
-									"id_missions"
+									"url"
 								};
 		
 		// Initializes the query
@@ -111,22 +115,20 @@ public class DataBase {
 		
 		// Initializes the fields
 		BasicDBObject field = new BasicDBObject();
-		field.put(field_names[0], 0);
-		field.put(field_names[1], 1);
-		field.put(field_names[2], 2);
-		field.put(field_names[3], 3);
-		field.put(field_names[4], 4);
-		field.put(field_names[5], 5);
-		field.put(field_names[6], 8);
-		field.put(field_names[7], 9);
-		field.put(field_names[8], 11);
+		field.put(field_names[0], 0);//_id
+		field.put(field_names[1], 1);//numero_devis
+		field.put(field_names[2], 2);//date_devis
+		field.put(field_names[3], 3);//date_paiement
+		field.put(field_names[5], 4);//penalite_retard
+		field.put(field_names[5], 5);//validite_devis
+		field.put(field_names[6], 6);//url
 		
 		DBCursor cursor = col.find(query, field);
 		while(cursor.hasNext()){
 			BasicDBObject object = (BasicDBObject) cursor.next();
 			
 			for(int i = 0; i < field_names.length; i++){
-				res.put	(field_names[i], object.getString(field_names[i]));
+				res.put	(field_names[i], object.getString(field_names[i]) == null ? "" : object.getString(field_names[i]));
 			}
 		}
 		
@@ -151,7 +153,7 @@ public class DataBase {
 									"date_facture",
 									"date_prestation",
 									"tva",
-									"id_missions"
+									"url"
 								};
 				
 		// Initializes the query
@@ -160,19 +162,19 @@ public class DataBase {
 		
 		// Initializes the fields
 		BasicDBObject field = new BasicDBObject();
-		field.put(field_names[0], 0);
-		field.put(field_names[1], 1);
-		field.put(field_names[2], 2);
-		field.put(field_names[3], 3);
-		field.put(field_names[4], 4);
-		field.put(field_names[5], 6);
+		field.put(field_names[0], 0);//_id
+		field.put(field_names[1], 1);//numero_facture
+		field.put(field_names[2], 2);//date_facture
+		field.put(field_names[3], 3);//date_prestation
+		field.put(field_names[4], 4);//tva
+		field.put(field_names[5], 6);//url
 		
 		DBCursor cursor = col.find(query, field);
 		while(cursor.hasNext()){
 			BasicDBObject object = (BasicDBObject) cursor.next();
 			
 			for(int i = 0; i < field_names.length; i++){
-				res.put	(field_names[i], object.getString(field_names[i]));
+				res.put	(field_names[i], object.getString(field_names[i]) == null ? "" : object.getString(field_names[i]));
 			}
 		}
 		
@@ -200,7 +202,9 @@ public class DataBase {
 								"date_debut",
 								"date_fin",
 								"clauses",
-								"lieu_mission"};
+								"lieu_mission",
+								"facture",
+								"devis"};
 		
 		// Initializes the query
 		BasicDBObject query = new BasicDBObject();
@@ -208,16 +212,18 @@ public class DataBase {
 		
 		// Initializes the fields
 		BasicDBObject field = new BasicDBObject();
-		field.put(field_names[0], 0);
-		field.put(field_names[1], 1);
-		field.put(field_names[2], 2);
-		field.put(field_names[3], 4);
-		field.put(field_names[4], 5);
-		field.put(field_names[5], 6);
-		field.put(field_names[6], 7);
-		field.put(field_names[7], 8);
-		field.put(field_names[8], 9);
-		field.put(field_names[9], 10);
+		field.put(field_names[0], 0);//_id
+		field.put(field_names[1], 1);//id_prestataire
+		field.put(field_names[2], 2);//id_cliet
+		field.put(field_names[3], 3);//objet
+		field.put(field_names[4], 4);//pu ht
+		field.put(field_names[5], 5);//quantite
+		field.put(field_names[6], 6);//date debut
+		field.put(field_names[7], 7);//date fin
+		field.put(field_names[8], 8);//clauses
+		field.put(field_names[9], 9);//lieu mission
+		field.put(field_names[10], 14);//facture
+		field.put(field_names[11], 15);//devis
 		
 		// Storing to the res map
 		DBCursor cursor = col.find(query, field);
@@ -225,7 +231,7 @@ public class DataBase {
 			BasicDBObject object = (BasicDBObject) cursor.next();
 			
 			for(int i = 0; i < field_names.length; i++){
-				res.put	(field_names[i], object.getString(field_names[i]));
+				res.put	(field_names[i], object.getString(field_names[i]) == null ? "" : object.getString(field_names[i]));
 			}
 		}
 		

@@ -26,6 +26,9 @@ public class FactureGenerator extends Generator {
             initFonts();
             
             facture = db.getFacture(mission.get("facture"));
+
+            setTitle("Facture");
+            setSubject(facture.get("numero_facture"));
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -42,7 +45,7 @@ public class FactureGenerator extends Generator {
         write(57, 765, person.get("nom") + " " + person.get("prenom"), arial, FONT_SIZE_NORMAL);
 
         // Siret
-        write(93, 746, "0258 852 156 879", arial, FONT_SIZE_NORMAL);
+        write(93, 746, person.get("siret"), arial, FONT_SIZE_NORMAL);
 
         // CUSTOMER
         person = db.getUser(mission.get("id_client"));

@@ -26,6 +26,9 @@ public class DevisGenerator extends Generator {
             initFonts();
             
             devis = db.getDevis(mission.get("devis"));
+            
+            setTitle("Devis");
+            setSubject(devis.get("numero_devis"));
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -44,7 +47,7 @@ public class DevisGenerator extends Generator {
         write(78, 697, person.get("email"), arial, FONT_SIZE_NORMAL);
 
         // N SIREN
-        write(98, 677, "12345679098", arial, FONT_SIZE_NORMAL);
+        write(98, 677, person.get("siret"), arial, FONT_SIZE_NORMAL);
 
         // Date
         write(348, 576, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
@@ -89,9 +92,6 @@ public class DevisGenerator extends Generator {
 
         // Modalities
         write(166, 210, "Voie postale", arial, FONT_SIZE_NORMAL);
-
-        // Remise
-        write(475, 178, devis.get("remise"), arial, FONT_SIZE_NORMAL);
 
         // TOTAL (HT)
         write(475, 163, total_price + " €", arial, FONT_SIZE_NORMAL);

@@ -39,16 +39,16 @@ public class Generator {
      * The constructor
      */
     public Generator(String missionId) {
-        this.title      = "";
-        this.subject    = "";
-
+        db = new DataBase("localhost");
+        mission = db.getMission(missionId);
+        
         this.missionId 	= missionId;
         this. document  = null;
         this.arialBold  = null;
         this.arial      = null;
         
-        db = new DataBase("localhost");
-        mission = db.getMission(missionId);
+        this.title      = "";
+        this.subject    = "";
     }
 
     public void setDocument(PDDocument document){
