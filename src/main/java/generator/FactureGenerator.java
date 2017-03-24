@@ -39,22 +39,35 @@ public class FactureGenerator extends Generator {
      */
     @Override
     protected void header() throws Exception {
-        // PRESTA
+        // ============ PRESTA ===========
     	Map<String, String> person = db.getUser(mission.get("id_prestataire"));
         // Name
-        write(57, 765, person.get("nom") + " " + person.get("prenom"), arial, FONT_SIZE_NORMAL);
-
-        // Siret
-        write(93, 746, person.get("siret"), arial, FONT_SIZE_NORMAL);
-
-        // CUSTOMER
-        person = db.getUser(mission.get("id_client"));
-        // Name
-        write(350, 725, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
+        write(57, 801, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
 
         // City
-        write(350, 710, person.get("adresse"), arial, FONT_SIZE_NORMAL);
+        write(57, 783, person.get("adresse"), arial, FONT_SIZE_NORMAL);
 
+        // Ville, CP
+        write(57, 765, person.get("ville") + ", " + person.get("codePostal"), arial, FONT_SIZE_NORMAL);
+
+        // Siret
+        write(105, 747, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+
+        // ============ CUSTOMER ===========
+        person = db.getUser(mission.get("id_client"));
+        // Name
+        write(327, 803, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
+
+        // City
+        write(327, 786, person.get("adresse"), arial, FONT_SIZE_NORMAL);
+
+        // Ville, CP
+        write(327, 768, person.get("ville") + ", " + person.get("codePostal"), arial, FONT_SIZE_NORMAL);
+
+        // Siret
+        write(377, 751, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+
+        // ================= Facture ==================
         // Date
         write(91, 702, facture.get("date_facture"), arial, FONT_SIZE_NORMAL);
     }

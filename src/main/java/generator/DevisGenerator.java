@@ -39,21 +39,35 @@ public class DevisGenerator extends Generator {
      */
     @Override
     protected void header() throws Exception {
+    	// =============== Prestataire ===================
     	Map<String, String> person = db.getUser(mission.get("id_prestataire"));
         // Phone number
-        write(100, 720, person.get("telephone"), arial, FONT_SIZE_NORMAL);
+        write(98, 707, person.get("telephone"), arial, FONT_SIZE_NORMAL);
 
         // Email
-        write(78, 697, person.get("email"), arial, FONT_SIZE_NORMAL);
+        write(78, 694, person.get("email"), arial, FONT_SIZE_NORMAL);
 
         // N SIREN
-        write(98, 677, person.get("siret"), arial, FONT_SIZE_NORMAL);
+        write(95, 673, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        
+        // ============= Client =========================
+        person = db.getUser(mission.get("id_client"));
+        // Phone number
+        write(375, 652, person.get("telephone"), arial, FONT_SIZE_NORMAL);
 
+        // Email
+        write(360, 640, person.get("email"), arial, FONT_SIZE_NORMAL);
+
+        // N SIREN
+        write(375, 617, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+
+        // Devis
+        
         // Date
-        write(348, 576, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
+        write(348, 545, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
 
         // Devis number
-        write(340, 533, devis.get("numero_devis"), arialBold, FONT_SIZE_BIG_TITLE);
+        write(340, 503, devis.get("numero_devis"), arialBold, FONT_SIZE_BIG_TITLE);
     }
 
     /**
@@ -61,7 +75,7 @@ public class DevisGenerator extends Generator {
      */
     @Override
     protected void body() throws Exception {
-        int y = 470;
+        int y = 440;
 
         // Products
         write(61, y, mission.get("objet"), arial, FONT_SIZE_NORMAL);
@@ -77,24 +91,17 @@ public class DevisGenerator extends Generator {
         write(475, y, total_price + " €", arial, FONT_SIZE_NORMAL);
 
         // SALE CONDITION
-        // Modalities
-        write(175, 331, "Carte bancaire", arialBold, FONT_SIZE_NORMAL);
+        // Clauses
+        write(61, 277, mission.get("clauses"), arial, FONT_SIZE_NORMAL);
 
-        // Pay date
-        write(152, 311, devis.get("date_paiement"), arial, FONT_SIZE_NORMAL);
+        // Date de début
+        write(127, 188, mission.get("date_debut"), arial, FONT_SIZE_NORMAL);
 
-        // Late penalty
-        write(157, 290, devis.get("penalite_retard") + " €", arial, FONT_SIZE_NORMAL);
-
-        // LIV CONDITION
-        // Liv date
-        write(145, 240, "15/11/2016", arial, FONT_SIZE_NORMAL);
-
-        // Modalities
-        write(166, 210, "Voie postale", arial, FONT_SIZE_NORMAL);
+        // Date de fin
+        write(115, 167, mission.get("date_fin") + " €", arial, FONT_SIZE_NORMAL);
 
         // TOTAL (HT)
-        write(475, 163, total_price + " €", arial, FONT_SIZE_NORMAL);
+        write(475, 118, total_price + " €", arial, FONT_SIZE_NORMAL);
     }
 
     /**
