@@ -28,7 +28,7 @@ public class FactureGenerator extends Generator {
             facture = db.getFacture(mission.get("facture"));
 
             setTitle("Facture");
-            setSubject(facture.get("numero_facture"));
+            setSubject("FAC" + facture.get("numero_facture"));
         } catch(Exception e){
             e.printStackTrace();
         }

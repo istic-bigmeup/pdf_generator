@@ -28,7 +28,7 @@ public class DevisGenerator extends Generator {
             devis = db.getDevis(mission.get("devis"));
             
             setTitle("Devis");
-            setSubject(devis.get("numero_devis"));
+            setSubject("DEV" + devis.get("numero_devis"));
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -64,7 +64,7 @@ public class DevisGenerator extends Generator {
         // Devis
         
         // Date
-        write(348, 545, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
+        write(348, 546, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
 
         // Devis number
         write(340, 503, devis.get("numero_devis"), arialBold, FONT_SIZE_BIG_TITLE);
@@ -92,7 +92,12 @@ public class DevisGenerator extends Generator {
 
         // SALE CONDITION
         // Clauses
-        write(61, 277, mission.get("clauses"), arial, FONT_SIZE_NORMAL);
+        y = 277;
+        String[] c = mission.get("clauses").split("\n");
+        for(int i = 0; i < c.length; i++){
+        	write(61, y, c[i], arial, FONT_SIZE_NORMAL);
+        	y -= 10;
+        }
 
         // Date de début
         write(127, 188, mission.get("date_debut"), arial, FONT_SIZE_NORMAL);
