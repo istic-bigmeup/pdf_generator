@@ -21,7 +21,7 @@ public class FactureGenerator extends Generator {
         super(missionId);
 
         try {
-            PDDocument document = PDDocument.load(new File("resources/facture.pdf"));
+            PDDocument document = PDDocument.load(new File("resources/initialPDF/facture.pdf"));
             setDocument(document);
             initFonts();
             
@@ -56,7 +56,7 @@ public class FactureGenerator extends Generator {
         // ============ CUSTOMER ===========
         person = db.getUser(mission.get("id_client"));
         // Name
-        write(327, 803, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
+        write(327, 803, person.get("nom_entreprise"), arialBold, FONT_SIZE_NORMAL);
 
         // City
         write(327, 786, person.get("adresse"), arial, FONT_SIZE_NORMAL);
@@ -83,6 +83,8 @@ public class FactureGenerator extends Generator {
         // TABLE
         int y = 573;
         
+        // ===================== Le service =================
+        // Le prix unitaire
         // Quantity
         write(55, y, mission.get("quantite"), arial, FONT_SIZE_NORMAL);
 
@@ -95,6 +97,25 @@ public class FactureGenerator extends Generator {
         // Total price TTC
         double total_price = Double.parseDouble(mission.get("quantite")) * Double.parseDouble(mission.get("prix_unitaire_ht"));
         write(445, y, total_price + " €", arial, FONT_SIZE_NORMAL);
+        
+        // ==================== Les frais ===================
+        // ============ Les frais annexes ==================
+        double frais_annexes = Double.parseDouble(mission.get("autres_frais"));
+        y -= 10;
+        if(frais_annexes > 0){
+	        // Products
+	        write(55, y, "Frais annexes", arial, FONT_SIZE_NORMAL);
+	
+	        // Quantities
+	        write(130, y, "1", arial, FONT_SIZE_NORMAL);
+	
+	        // Unit's price
+	        write(330, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);
+	
+	        // Total price
+	        total_price += frais_annexes;
+	        write(445, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);
+        }
 
         // TOTAL TTC
         // Unit's price TTC

@@ -3,6 +3,7 @@ package generator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -21,7 +22,7 @@ public class DevisGenerator extends Generator {
         super(missionId);
 
         try {
-            PDDocument document = PDDocument.load(new File("resources/devis.pdf"));
+            PDDocument document = PDDocument.load(new File("resources/initialPDF/devis.pdf"));
             setDocument(document);
             initFonts();
             
@@ -56,7 +57,7 @@ public class DevisGenerator extends Generator {
         write(375, 652, person.get("telephone"), arial, FONT_SIZE_NORMAL);
 
         // Email
-        write(360, 640, person.get("email"), arial, FONT_SIZE_NORMAL);
+        write(380, 640, person.get("nom_entreprise"), arial, FONT_SIZE_NORMAL);
 
         // N SIREN
         write(375, 617, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
@@ -76,7 +77,10 @@ public class DevisGenerator extends Generator {
     @Override
     protected void body() throws Exception {
         int y = 440;
+        
+        double total_price	= 0;
 
+        // ============= Le service ====================
         // Products
         write(61, y, mission.get("objet"), arial, FONT_SIZE_NORMAL);
 
@@ -87,23 +91,71 @@ public class DevisGenerator extends Generator {
         write(403, y, mission.get("prix_unitaire_ht") + " €", arial, FONT_SIZE_NORMAL);
 
         // Total price
-        double total_price = Double.parseDouble(mission.get("quantite")) * Double.parseDouble(mission.get("prix_unitaire_ht"));
-        write(475, y, total_price + " €", arial, FONT_SIZE_NORMAL);
+        double prix_ht 	 = Double.parseDouble(mission.get("quantite")) * Double.parseDouble(mission.get("prix_unitaire_ht"));
+        total_price 	+= prix_ht;
+        write(475, y, prix_ht + " €", arial, FONT_SIZE_NORMAL);
+        
+        // ============ Les frais annexes ==================
+        double frais_annexes = Double.parseDouble(mission.get("autres_frais"));
+        y -= 10;
+        if(frais_annexes > 0){
+	        // Products
+	        write(61, y, "Frais annexes", arial, FONT_SIZE_NORMAL);
+	
+	        // Quantities
+	        write(342, y, "1", arial, FONT_SIZE_NORMAL);
+	
+	        // Unit's price
+	        write(403, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);
+	
+	        // Total price
+	        total_price += frais_annexes;
+	        write(475, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);
+        }
 
         // SALE CONDITION
         // Clauses
-        y = 277;
-        String[] c = mission.get("clauses").split("\n");
+        y 							= 358;
+        
+        int nbLignesMax 			= 23;
+        int nbLignesTot 			= 0;
+        
+        String[] c 					= mission.get("clauses").split("\n");
+        ArrayList<String> clauses 	= new ArrayList<String>(); 
+        
+        // On coupe les clauses trop longues
         for(int i = 0; i < c.length; i++){
-        	write(61, y, c[i], arial, FONT_SIZE_NORMAL);
-        	y -= 10;
+        	// On prend le nombre de lignes générées par la ligne courante
+        	int nbLignes = (c[i].length() / 70) + 1;
+        	
+        	// On l'ajoute au total de lignes
+        	nbLignesTot += nbLignes;
+        	
+        	// Si le nombre de lignes totales est supérieur au nombre de lignes max..
+        	if(nbLignesTot >= nbLignesMax){
+        		// ..on enlève les lignes en trop
+        		nbLignes -= nbLignesTot - nbLignesMax;
+        	}
+        	
+    		for(int j = 0; j < nbLignes; j++){
+    			if(c[i].length() < (j*70) + 71){// Si on sort du tableau de caractères
+    				clauses.add(c[i].substring((j == 0 ? j*70 : (j*70+1)), c[i].length()));
+    			} else {// Sinon
+    				clauses.add(c[i].substring((j == 0 ? j*70 : (j*70+1)), (j*70) + 71));
+    			}
+    		}
+    	}
+        
+        for(String clause: clauses){
+        	write(61, y, clause, arial, FONT_SIZE_CLAUSE);
+        	y -= 7;
         }
 
         // Date de début
-        write(127, 188, mission.get("date_debut"), arial, FONT_SIZE_NORMAL);
+        write(127, 185, mission.get("date_debut"), arial, FONT_SIZE_NORMAL);
 
         // Date de fin
-        write(115, 167, mission.get("date_fin") + " €", arial, FONT_SIZE_NORMAL);
+        write(115, 164, mission.get("date_fin"), arial, FONT_SIZE_NORMAL);
 
         // TOTAL (HT)
         write(475, 118, total_price + " €", arial, FONT_SIZE_NORMAL);

@@ -16,6 +16,7 @@ import java.util.Map;
  *
  */
 public class Generator {
+    protected final int FONT_SIZE_CLAUSE    = 7;
     protected final int FONT_SIZE_NORMAL    = 10;
     protected final int FONT_SIZE_TITLE     = 12;
     protected final int FONT_SIZE_BIG_TITLE = 19;

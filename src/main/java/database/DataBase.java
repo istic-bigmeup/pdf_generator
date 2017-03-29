@@ -208,7 +208,8 @@ public class DataBase {
 								"clauses",
 								"lieu_mission",
 								"facture",
-								"devis"};
+								"devis",
+								"autres_frais"};
 		
 		// Initializes the query
 		BasicDBObject query = new BasicDBObject();
@@ -228,6 +229,7 @@ public class DataBase {
 		field.put(field_names[9], 9);//lieu mission
 		field.put(field_names[10], 14);//facture
 		field.put(field_names[11], 15);//devis
+		field.put(field_names[12], 13);//frais
 		
 		// Storing to the res map
 		DBCursor cursor = col.find(query, field);
