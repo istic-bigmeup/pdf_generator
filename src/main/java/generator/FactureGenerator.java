@@ -28,7 +28,7 @@ public class FactureGenerator extends Generator {
             facture = db.getFacture(mission.get("facture"));
 
             setTitle("Facture");
-            setSubject("FAC" + facture.get("numero_facture"));
+            setSubject(facture.get("numero_facture"));
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -103,11 +103,11 @@ public class FactureGenerator extends Generator {
         double frais_annexes = Double.parseDouble(mission.get("autres_frais"));
         y -= 10;
         if(frais_annexes > 0){
-	        // Products
-	        write(55, y, "Frais annexes", arial, FONT_SIZE_NORMAL);
-	
 	        // Quantities
-	        write(130, y, "1", arial, FONT_SIZE_NORMAL);
+	        write(55, y, "1", arial, FONT_SIZE_NORMAL);
+	        
+	        // Products
+	        write(130, y, "Frais annexes", arial, FONT_SIZE_NORMAL);
 	
 	        // Unit's price
 	        write(330, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);

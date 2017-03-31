@@ -29,7 +29,7 @@ public class DevisGenerator extends Generator {
             devis = db.getDevis(mission.get("devis"));
             
             setTitle("Devis");
-            setSubject("DEV" + devis.get("numero_devis"));
+            setSubject(devis.get("numero_devis"));
         } catch(Exception e){
             e.printStackTrace();
         }
