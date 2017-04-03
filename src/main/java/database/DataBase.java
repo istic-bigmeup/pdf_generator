@@ -59,7 +59,8 @@ public class DataBase {
 									"numero_siret",
 									"numero_tva",
 									"codePostal",
-									"ville"
+									"ville",
+									"french_tech"
 								};
 		
 		// Initializes the query
@@ -79,6 +80,7 @@ public class DataBase {
 		field.put(field_names[8], 15);//numero tva
 		field.put(field_names[9], 24);//code postal
 		field.put(field_names[10], 25);//ville
+		field.put(field_names[11], 22);//french_tech
 		
 		DBCursor cursor = col.find(query, field);
 		while(cursor.hasNext()){

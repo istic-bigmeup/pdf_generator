@@ -27,7 +27,7 @@ public class FactureGenerator extends Generator {
             
             facture = db.getFacture(mission.get("facture"));
 
-            setTitle("Facture");
+            setTitle("FAC");
             setSubject(facture.get("numero_facture"));
         } catch(Exception e){
             e.printStackTrace();
@@ -41,6 +41,7 @@ public class FactureGenerator extends Generator {
     protected void header() throws Exception {
         // ============ PRESTA ===========
     	Map<String, String> person = db.getUser(mission.get("id_prestataire"));
+    	
         // Name
         write(57, 801, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
 
@@ -55,6 +56,7 @@ public class FactureGenerator extends Generator {
 
         // ============ CUSTOMER ===========
         person = db.getUser(mission.get("id_client"));
+        
         // Name
         write(327, 803, person.get("nom_entreprise"), arialBold, FONT_SIZE_NORMAL);
 
@@ -78,7 +80,7 @@ public class FactureGenerator extends Generator {
     @Override
     protected void body() throws Exception {
         // Facture's number
-        write(300, 644, facture.get("numero_facture"), arialBold, FONT_SIZE_BIG_TITLE);
+        write(285, 644, facture.get("numero_facture"), arialBold, FONT_SIZE_BIG_TITLE);
 
         // TABLE
         int y = 573;
@@ -92,11 +94,11 @@ public class FactureGenerator extends Generator {
         write(130, y, mission.get("objet"), arial, FONT_SIZE_NORMAL);
 
         // Unit's price TTC
-        write(330, y, mission.get("prix_unitaire_ht") + " €", arial, FONT_SIZE_NORMAL);
+        write(330, y, numberFormat.format(Double.parseDouble(mission.get("prix_unitaire_ht"))) + " €", arial, FONT_SIZE_NORMAL);
 
         // Total price TTC
         double total_price = Double.parseDouble(mission.get("quantite")) * Double.parseDouble(mission.get("prix_unitaire_ht"));
-        write(445, y, total_price + " €", arial, FONT_SIZE_NORMAL);
+        write(445, y, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
         
         // ==================== Les frais ===================
         // ============ Les frais annexes ==================
@@ -110,19 +112,15 @@ public class FactureGenerator extends Generator {
 	        write(130, y, "Frais annexes", arial, FONT_SIZE_NORMAL);
 	
 	        // Unit's price
-	        write(330, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);
+	        write(330, y, numberFormat.format(frais_annexes) + " €", arial, FONT_SIZE_NORMAL);
 	
 	        // Total price
 	        total_price += frais_annexes;
-	        write(445, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);
+	        write(445, y, numberFormat.format(frais_annexes) + " €", arial, FONT_SIZE_NORMAL);
         }
 
-        // TOTAL TTC
-        // Unit's price TTC
-        write(330, 235, total_price + " €", arial, FONT_SIZE_NORMAL);
-
         // Total price TTC
-        write(445, 235, total_price + " €", arial, FONT_SIZE_NORMAL);
+        write(445, 235, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
     }
 
     /**

@@ -28,7 +28,7 @@ public class DevisGenerator extends Generator {
             
             devis = db.getDevis(mission.get("devis"));
             
-            setTitle("Devis");
+            setTitle("DEV");
             setSubject(devis.get("numero_devis"));
         } catch(Exception e){
             e.printStackTrace();
@@ -46,29 +46,29 @@ public class DevisGenerator extends Generator {
         write(98, 707, person.get("telephone"), arial, FONT_SIZE_NORMAL);
 
         // Email
-        write(78, 694, person.get("email"), arial, FONT_SIZE_NORMAL);
+        write(78, 695, person.get("email"), arial, FONT_SIZE_NORMAL);
 
         // N SIREN
-        write(95, 673, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        write(95, 677, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
         
         // ============= Client =========================
         person = db.getUser(mission.get("id_client"));
         // Phone number
-        write(375, 652, person.get("telephone"), arial, FONT_SIZE_NORMAL);
+        write(375, 656, person.get("telephone"), arial, FONT_SIZE_NORMAL);
 
         // Email
-        write(380, 640, person.get("nom_entreprise"), arial, FONT_SIZE_NORMAL);
+        write(381, 646, person.get("nom_entreprise"), arial, FONT_SIZE_NORMAL);
 
         // N SIREN
-        write(375, 617, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        write(377, 623, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
 
         // Devis
         
         // Date
-        write(348, 546, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
+        write(348, 552, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
 
         // Devis number
-        write(340, 503, devis.get("numero_devis"), arialBold, FONT_SIZE_BIG_TITLE);
+        write(270, 510, devis.get("numero_devis"), arialBold, FONT_SIZE_BIG_TITLE);
     }
 
     /**
@@ -76,7 +76,7 @@ public class DevisGenerator extends Generator {
      */
     @Override
     protected void body() throws Exception {
-        int y = 440;
+        int y = 445;
         
         double total_price	= 0;
 
@@ -88,12 +88,12 @@ public class DevisGenerator extends Generator {
         write(342, y, mission.get("quantite"), arial, FONT_SIZE_NORMAL);
 
         // Unit's price
-        write(403, y, mission.get("prix_unitaire_ht") + " €", arial, FONT_SIZE_NORMAL);
+        write(403, y, numberFormat.format(Double.parseDouble(mission.get("prix_unitaire_ht"))) + " €", arial, FONT_SIZE_NORMAL);
 
         // Total price
         double prix_ht 	 = Double.parseDouble(mission.get("quantite")) * Double.parseDouble(mission.get("prix_unitaire_ht"));
         total_price 	+= prix_ht;
-        write(475, y, prix_ht + " €", arial, FONT_SIZE_NORMAL);
+        write(475, y, numberFormat.format(prix_ht) + " €", arial, FONT_SIZE_NORMAL);
         
         // ============ Les frais annexes ==================
         double frais_annexes = Double.parseDouble(mission.get("autres_frais"));
@@ -106,16 +106,16 @@ public class DevisGenerator extends Generator {
 	        write(342, y, "1", arial, FONT_SIZE_NORMAL);
 	
 	        // Unit's price
-	        write(403, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);
+	        write(403, y, numberFormat.format(frais_annexes) + " €", arial, FONT_SIZE_NORMAL);
 	
 	        // Total price
 	        total_price += frais_annexes;
-	        write(475, y, frais_annexes + " €", arial, FONT_SIZE_NORMAL);
+	        write(475, y, numberFormat.format(frais_annexes) + " €", arial, FONT_SIZE_NORMAL);
         }
 
         // SALE CONDITION
         // Clauses
-        y 							= 358;
+        y 							= 363;
         
         int nbLignesMax 			= 23;
         int nbLignesTot 			= 0;
@@ -147,18 +147,21 @@ public class DevisGenerator extends Generator {
     	}
         
         for(String clause: clauses){
-        	write(61, y, clause, arial, FONT_SIZE_CLAUSE);
-        	y -= 7;
+        	write(61, y, clause, arial, FONT_SIZE_NORMAL);
+        	y -= 10;
         }
 
         // Date de début
-        write(127, 185, mission.get("date_debut"), arial, FONT_SIZE_NORMAL);
+        write(127, 192, mission.get("date_debut"), arial, FONT_SIZE_NORMAL);
 
         // Date de fin
-        write(115, 164, mission.get("date_fin"), arial, FONT_SIZE_NORMAL);
+        write(115, 170, mission.get("date_fin"), arial, FONT_SIZE_NORMAL);
+
+        // Date d'acceptation du contrat
+        write(185, 151, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
 
         // TOTAL (HT)
-        write(475, 118, total_price + " €", arial, FONT_SIZE_NORMAL);
+        write(475, 123, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
     }
 
     /**

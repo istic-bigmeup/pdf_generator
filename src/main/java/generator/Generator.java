@@ -9,6 +9,9 @@ import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import database.DataBase;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -31,6 +34,8 @@ public class Generator {
     protected String missionId;
     protected DataBase db;
     protected Map<String, String> mission;
+    
+    protected DecimalFormat numberFormat;
 
     private String title;
     private String subject;
@@ -42,6 +47,12 @@ public class Generator {
     public Generator(String missionId) {
         db = new DataBase("localhost");
         mission = db.getMission(missionId);
+        
+        // Set the format
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.GERMAN);
+        dfs.setDecimalSeparator('.');
+        dfs.setGroupingSeparator(',');
+        numberFormat = new DecimalFormat("###,###,###,###.00", dfs);
         
         this.missionId 	= missionId;
         this. document  = null;
@@ -75,7 +86,7 @@ public class Generator {
 
             footer();
 
-            document.save("resources/" + this.title + "_" + this.subject + ".pdf");
+            document.save("resources/" + this.title + this.subject + ".pdf");
 
             document.close();
         } catch(Exception e){
