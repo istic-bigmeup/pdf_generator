@@ -3,6 +3,7 @@ package generator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -43,35 +44,36 @@ public class FactureGenerator extends Generator {
     	Map<String, String> person = db.getUser(mission.get("id_prestataire"));
     	
         // Name
-        write(57, 801, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
+        write(57, 772, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
 
         // City
-        write(57, 783, person.get("adresse"), arial, FONT_SIZE_NORMAL);
+        write(57, 754, person.get("adresse"), arial, FONT_SIZE_NORMAL);
 
         // Ville, CP
-        write(57, 765, person.get("ville") + ", " + person.get("codePostal"), arial, FONT_SIZE_NORMAL);
+        write(57, 736, person.get("ville") + ", " + person.get("codePostal"), arial, FONT_SIZE_NORMAL);
 
         // Siret
-        write(105, 747, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        //write(105, 747, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        write(105, 718, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
 
         // ============ CUSTOMER ===========
         person = db.getUser(mission.get("id_client"));
         
         // Name
-        write(327, 803, person.get("nom_entreprise"), arialBold, FONT_SIZE_NORMAL);
+        write(327, 772, person.get("nom_entreprise"), arialBold, FONT_SIZE_NORMAL);
 
         // City
-        write(327, 786, person.get("adresse"), arial, FONT_SIZE_NORMAL);
+        write(327, 754, person.get("adresse"), arial, FONT_SIZE_NORMAL);
 
         // Ville, CP
-        write(327, 768, person.get("ville") + ", " + person.get("codePostal"), arial, FONT_SIZE_NORMAL);
+        write(327, 736, person.get("ville") + ", " + person.get("codePostal"), arial, FONT_SIZE_NORMAL);
 
         // Siret
-        write(377, 751, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        write(378, 721, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
 
         // ================= Facture ==================
         // Date
-        write(91, 702, facture.get("date_facture"), arial, FONT_SIZE_NORMAL);
+        write(91, 673, facture.get("date_facture"), arial, FONT_SIZE_NORMAL);
     }
 
     /**
@@ -80,18 +82,15 @@ public class FactureGenerator extends Generator {
     @Override
     protected void body() throws Exception {
         // Facture's number
-        write(285, 644, facture.get("numero_facture"), arialBold, FONT_SIZE_BIG_TITLE);
+        write(304, 615, facture.get("numero_facture"), arialBold, FONT_SIZE_BIG_TITLE);
 
         // TABLE
-        int y = 573;
+        int y = 544;
         
         // ===================== Le service =================
         // Le prix unitaire
         // Quantity
         write(55, y, mission.get("quantite"), arial, FONT_SIZE_NORMAL);
-
-        // Designation
-        write(130, y, mission.get("objet"), arial, FONT_SIZE_NORMAL);
 
         // Unit's price TTC
         write(330, y, numberFormat.format(Double.parseDouble(mission.get("prix_unitaire_ht"))) + " €", arial, FONT_SIZE_NORMAL);
@@ -99,6 +98,38 @@ public class FactureGenerator extends Generator {
         // Total price TTC
         double total_price = Double.parseDouble(mission.get("quantite")) * Double.parseDouble(mission.get("prix_unitaire_ht"));
         write(445, y, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
+        
+        // Designation
+        int nbLignesMax 			= 23;
+        int nbLignesTot 			= 0;
+        
+        String c 					= mission.get("objet");
+        ArrayList<String> dsn 		= new ArrayList<String>(); 
+        
+    	// On prend le nombre de lignes générées par la ligne courante
+    	int nbLignes = (c.length() / 35) + 1;
+    	
+    	// On l'ajoute au total de lignes
+    	nbLignesTot += nbLignes;
+    	
+    	// Si le nombre de lignes totales est supérieur au nombre de lignes max..
+    	if(nbLignesTot >= nbLignesMax){
+    		// ..on enlève les lignes en trop
+    		nbLignes -= nbLignesTot - nbLignesMax;
+    	}
+    	
+		for(int j = 0; j < nbLignes; j++){
+			if(c.length() < (j*35) + 36){// Si on sort du tableau de caractères
+				dsn.add(c.substring((j == 0 ? j*35 : (j*35+1)), c.length()));
+			} else {// Sinon
+				dsn.add(c.substring((j == 0 ? j*35 : (j*35+1)), (j*35) + 36));
+			}
+		}
+
+        for(String d: dsn){
+        	write(130, y, d, arial, FONT_SIZE_NORMAL);
+        	y -= 10;
+        }
         
         // ==================== Les frais ===================
         // ============ Les frais annexes ==================
@@ -120,7 +151,7 @@ public class FactureGenerator extends Generator {
         }
 
         // Total price TTC
-        write(445, 235, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
+        write(445, 206, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
     }
 
     /**

@@ -76,29 +76,31 @@ public class FactureBigMeUpGenerator extends Generator {
         // ===================== La commission BigMeUp =================
         // Le prix unitaire
         // Quantity
-        write(55, y, "1", arial, FONT_SIZE_NORMAL);
+        write(55, y-5, "1", arial, FONT_SIZE_NORMAL);
 
         // Designation
+        double puht = 	( 	( 
+				Double.parseDouble(mission.get("prix_unitaire_ht")) 
+				* 
+				Double.parseDouble(mission.get("quantite")) 
+			) 
+			+ 
+			Double.parseDouble(mission.get("autres_frais"))
+		);
         write(130, y, "Commission BigMeUp", arial, FONT_SIZE_NORMAL);
+        write(130, y-10, numberFormat.format(puht) + " € x 15%", arial, FONT_SIZE_NORMAL);
 
         // Unit's price TTC
-        double puht = 	( 	( 
-        						Double.parseDouble(mission.get("prix_unitaire_ht")) 
-        						* 
-        						Double.parseDouble(mission.get("quantite")) 
-        					) 
-        					+ 
-        					Double.parseDouble(mission.get("autres_frais"))
-        				) * 0.15;
-        write(330, y, numberFormat.format(puht) + " €", arial, FONT_SIZE_NORMAL);
+        puht *= 0.15;
+        write(330, y-5, numberFormat.format(puht) + " €", arial, FONT_SIZE_NORMAL);
 
         // Total price TTC
         double total_price = puht;
-        write(445, y, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
+        write(445, y-5, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
         
         // ==================== La réduction FrenchTech ===================
         Map<String, String> person = db.getUser(mission.get("id_prestataire"));
-        y -= 10;
+        y -= 30;
         if(person.get("french_tech").equals("1")){
         	// Calcul de la réduc si c'est un bonhomme de la FrenchTech
             double reduc = ( 	( 
@@ -115,7 +117,7 @@ public class FactureBigMeUpGenerator extends Generator {
 
 	        // Products
 	        write(130, y, "Réduction membre FrenchTech", arial, FONT_SIZE_NORMAL);
-	        write(130, y-10, "Rennes Saint-Malo", arial, FONT_SIZE_NORMAL);
+	        write(130, y-10, "Rennes Saint-Malo (-50%)", arial, FONT_SIZE_NORMAL);
 	
 	        // Unit's price
 	        write(330, y-5, "-" + numberFormat.format(reduc) + " €", arial, FONT_SIZE_NORMAL);

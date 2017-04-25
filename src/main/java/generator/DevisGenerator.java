@@ -43,32 +43,32 @@ public class DevisGenerator extends Generator {
     	// =============== Prestataire ===================
     	Map<String, String> person = db.getUser(mission.get("id_prestataire"));
         // Phone number
-        write(98, 707, person.get("telephone"), arial, FONT_SIZE_NORMAL);
+        write(93, 720, person.get("telephone"), arial, FONT_SIZE_NORMAL);
 
         // Email
-        write(78, 695, person.get("email"), arial, FONT_SIZE_NORMAL);
+        write(95, 700, person.get("email"), arial, FONT_SIZE_NORMAL);
 
         // N SIREN
-        write(95, 677, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        write(89, 679, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
         
         // ============= Client =========================
         person = db.getUser(mission.get("id_client"));
         // Phone number
-        write(375, 656, person.get("telephone"), arial, FONT_SIZE_NORMAL);
+        write(378, 661, person.get("telephone"), arial, FONT_SIZE_NORMAL);
 
         // Email
-        write(381, 646, person.get("nom_entreprise"), arial, FONT_SIZE_NORMAL);
+        write(382, 640, person.get("nom_entreprise"), arial, FONT_SIZE_NORMAL);
 
         // N SIREN
-        write(377, 623, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        write(376, 619, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
 
         // Devis
         
         // Date
-        write(348, 552, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
+        write(348, 550, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
 
         // Devis number
-        write(270, 510, devis.get("numero_devis"), arialBold, FONT_SIZE_BIG_TITLE);
+        write(270, 507, devis.get("numero_devis"), arialBold, FONT_SIZE_BIG_TITLE);
     }
 
     /**
@@ -152,13 +152,13 @@ public class DevisGenerator extends Generator {
         }
 
         // Date de début
-        write(127, 192, mission.get("date_debut"), arial, FONT_SIZE_NORMAL);
+        write(127, 189, mission.get("date_debut"), arial, FONT_SIZE_NORMAL);
 
         // Date de fin
-        write(115, 170, mission.get("date_fin"), arial, FONT_SIZE_NORMAL);
+        write(113, 169, mission.get("date_fin"), arial, FONT_SIZE_NORMAL);
 
         // Date d'acceptation du contrat
-        write(185, 151, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
+        write(185, 148, devis.get("date_devis"), arial, FONT_SIZE_NORMAL);
 
         // TOTAL (HT)
         write(475, 123, numberFormat.format(total_price) + " €", arial, FONT_SIZE_NORMAL);
