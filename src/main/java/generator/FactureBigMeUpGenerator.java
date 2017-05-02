@@ -33,29 +33,29 @@ public class FactureBigMeUpGenerator extends Generator {
         // ============ BigMeUp en tant que presta ===========
     	Map<String, String> person = db.getUser(mission.get("id_prestataire"));
         // Name
-        write(57, 801, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
+        write(57, 801, "BigMeUp", arialBold, FONT_SIZE_NORMAL);
 
         // City
-        write(57, 783, person.get("adresse"), arial, FONT_SIZE_NORMAL);
+        write(57, 783, "9 B Allée du champ du moulin", arial, FONT_SIZE_NORMAL);
 
         // Ville, CP
-        write(57, 765, person.get("ville") + ", " + person.get("codePostal"), arial, FONT_SIZE_NORMAL);
+        write(57, 765, "Cesson-Sévigné, 35510", arial, FONT_SIZE_NORMAL);
 
         // Siret
-        write(105, 747, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
+        write(105, 747, "82276800800010", arial, FONT_SIZE_NORMAL);
 
         // ============ Presta en tant que client ===========
         // Name
-        write(327, 803, "BigMeUp", arialBold, FONT_SIZE_NORMAL);
+        write(327, 803, person.get("nom") + " " + person.get("prenom"), arialBold, FONT_SIZE_NORMAL);
 
         // City
-        write(327, 786, "9 B Allée du champ du moulin", arial, FONT_SIZE_NORMAL);
+        write(327, 786, person.get("adresse"), arial, FONT_SIZE_NORMAL);
 
         // Ville, CP
-        write(327, 768, "Cesson-Sévigné, 35510", arial, FONT_SIZE_NORMAL);
+        write(327, 768, person.get("ville") + ", " + person.get("codePostal"), arial, FONT_SIZE_NORMAL);
 
         // Siret
-        write(377, 751, "82276800800010", arial, FONT_SIZE_NORMAL);
+        write(377, 751, person.get("numero_siret"), arial, FONT_SIZE_NORMAL);
 
         // ================= Facture ==================
         // Date
