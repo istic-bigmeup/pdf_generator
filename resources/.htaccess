@@ -1,4 +1,4 @@
 <FilesMatch "\.pdf$" >
     ForceType application/octet-stream
-    Header add Content-Disposition "attachment"
+    Header set Content-Disposition attachment
 </FilesMatch>
